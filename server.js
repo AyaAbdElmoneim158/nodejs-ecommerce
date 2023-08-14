@@ -49,8 +49,7 @@ if (process.env.NODE_ENV === 'development') {
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100,
-  message:
-    'Too many accounts created from this IP, please try again after an hour',
+  message: 'Too many accounts created from this IP, please try again after an hour',
 });
 
 // Apply the rate limiting middleware to all requests
@@ -79,7 +78,7 @@ app.all('*', (req, res, next) => {
 // Global error handling middleware for express
 app.use(globalError);
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8080;
 const server = app.listen(PORT, () => {
   console.log(`App running running on port ${PORT}`);
 });

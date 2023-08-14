@@ -6,19 +6,15 @@ const SubCategory = require('../../models/subCategoryModel');
 
 exports.createProductValidator = [
   check('title')
-    .isLength({ min: 3 })
-    .withMessage('must be at least 3 chars')
-    .notEmpty()
-    .withMessage('Product required')
+    .isLength({ min: 3 }).withMessage('must be at least 3 chars')
+    .notEmpty().withMessage('Product required')
     .custom((val, { req }) => {
       req.body.slug = slugify(val);
       return true;
     }),
   check('description')
-    .notEmpty()
-    .withMessage('Product description is required')
-    .isLength({ max: 2000 })
-    .withMessage('Too long description'),
+    .notEmpty().withMessage('Product description is required')
+    .isLength({ max: 2000 }).withMessage('Too long description'),
   check('quantity')
     .notEmpty()
     .withMessage('Product quantity is required')
@@ -29,12 +25,9 @@ exports.createProductValidator = [
     .isNumeric()
     .withMessage('Product quantity must be a number'),
   check('price')
-    .notEmpty()
-    .withMessage('Product price is required')
-    .isNumeric()
-    .withMessage('Product price must be a number')
-    .isLength({ max: 32 })
-    .withMessage('To long price'),
+    .notEmpty().withMessage('Product price is required')
+    .isNumeric().withMessage('Product price must be a number')
+    .isLength({ max: 32 }).withMessage('To long price'),
   check('priceAfterDiscount')
     .optional()
     .isNumeric()
@@ -76,7 +69,7 @@ exports.createProductValidator = [
     .isMongoId()
     .withMessage('Invalid ID formate')
     .custom((subcategoriesIds) =>
-      SubCategory.find({ _id: { $exists: true, $in: subcategoriesIds } }).then(
+      SubCategory.find({ _id: { $exists: true, $in: [subcategoriesIds] } }).then(
         (result) => {
           if (result.length < 1 || result.length !== subcategoriesIds.length) {
             return Promise.reject(new Error(`Invalid subcategories Ids`));
